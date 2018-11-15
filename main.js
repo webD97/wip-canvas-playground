@@ -1,8 +1,8 @@
 'use strict'
 
 document.addEventListener('DOMContentLoaded', () => {
-    setupGame('canvas', 60);
-    startGame();
+    const initialState = setupGame('canvas', 60);
+    startGame(initialState);
 });
 
 // Game management
@@ -18,23 +18,25 @@ const setupGame = (elementId, targetFPS) => {
         }
     };
 
-    window.__gameState = gameState;
+    // window.__gameState = gameState;
 
     gameState.targetFPS = targetFPS;
     gameState.canvas = document.getElementById(elementId);
     gameState.context = gameState.canvas.getContext('2d');
 
-    gameState.canvas.addEventListener('click',(e) => clickListener(e, window.__gameState));
-    gameState.canvas.addEventListener('keydown',(e) => keyboardListener(e, window.__gameState));
-    gameState.canvas.addEventListener('mousemove', (e) => mouseMoveListener(e, window.__gameState));
+    return gameState;
 };
 
-const startGame = () => {
-    window.__gameState.updateLoop = window.setInterval(() => {
-        window.__gameState = gameLoop(window.__gameState);
-    }, 1000 / window.__gameState.targetFPS);
+const startGame = (state) => {
+    state.canvas.addEventListener('click',(e) => clickListener(e, state));
+    state.canvas.addEventListener('keydown',(e) => keyboardListener(e, state));
+    state.canvas.addEventListener('mousemove', (e) => mouseMoveListener(e, state));
 
-    window.__gameState.canvas.focus();
+    state.gameLoop = window.setInterval(() => {
+        state = gameLoop(state);
+    }, 1000 / state.targetFPS);
+
+    state.canvas.focus();
 };
 
 const stopGame = (gameState) => {
