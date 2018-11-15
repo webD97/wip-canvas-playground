@@ -20,8 +20,6 @@ const setupGame = (elementId, targetFPS) => {
         }
     };
 
-    // window.__gameState = gameState;
-
     gameState.targetFPS = targetFPS;
     gameState.canvas = document.getElementById(elementId);
     gameState.context = gameState.canvas.getContext('2d');
@@ -82,7 +80,7 @@ const mouseMoveListener = (event, gameState) => {
 // Game loop
 const gameLoop = (gameState) => {
     // TODO: Use something else
-    const dtime = (+Date.now() - gameState.lastFrame) / 1e3;
+    const dtime = (performance.now() - gameState.lastFrame) / 1e3;
 
     const newState = update(gameState, dtime);
     draw(newState, dtime);
@@ -97,7 +95,7 @@ const update = (previousState, dtime) => {
              x: window.__mouseX,
              y: window.__mouseY
         },
-        lastFrame: +Date.now()
+        lastFrame: performance.now()
     };
 };
 
