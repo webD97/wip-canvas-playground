@@ -17,5 +17,5 @@ class DoubleBufferedCanvas {
         this.frontCanvasContext.clearRect(0, 0, this.frontCanvas.width, this.frontCanvas.height);
         this.frontCanvasContext.drawImage(this.bufferCanvas, 0, 0);
         this.bufferCanvasContext.clearRect(0, 0, this.bufferCanvas.width, this.bufferCanvas.height);
-    };
+    }
 }
