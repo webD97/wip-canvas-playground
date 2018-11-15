@@ -12,6 +12,8 @@ const setupGame = (elementId, targetFPS) => {
         canvas: null,
         context: null,
 
+        lastFrame: null,
+
         mouse: {
             x: null,
             y: null
@@ -79,23 +81,27 @@ const mouseMoveListener = (event, gameState) => {
 
 // Game loop
 const gameLoop = (gameState) => {
-    const newState = update(gameState);
-    draw(newState);
+    // TODO: Use something else
+    const dtime = (+Date.now() - gameState.lastFrame) / 1e3;
+
+    const newState = update(gameState, dtime);
+    draw(newState, dtime);
 
     return newState;
 };
 
-const update = (previousState) => {
+const update = (previousState, dtime) => {
     return {
          ...previousState,
          mouse: {
              x: window.__mouseX,
              y: window.__mouseY
-        }
+        },
+        lastFrame: +Date.now()
     };
 };
 
-const draw = (state) => {
+const draw = (state, dtime) => {
     const ctx = state.context;
 
     ctx.clearRect(0, 0, state.canvas.width, state.canvas.height);
